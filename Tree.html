@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>notepad</title>
+</head>
+<style type="text/css">
+ol,ul{
+display:block;
+list-style-type:none;
+margin:3px;
+}
+</style><body>
+<div>&lt;!DOCTYPE html&gt;<br>
+&lt;html lang="zh-CN"&gt;<br>
+&lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;meta charset="UTF-8"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;title&gt;3D&#31881;&#33394;&#22307;&#35806;&#26641; - &#31890;&#23376;&#29983;&#25104;&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;style&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; body {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; margin: 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; overflow: hidden;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; background-color: #000000;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; font-family: 'Microsoft YaHei', sans-serif;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #info {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; position: absolute;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bottom: 20px;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; left: 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width: 100%;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; text-align: center;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; color: rgba(255, 182, 193, 0.8);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; font-size: 14px;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; letter-spacing: 2px;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pointer-events: none;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z-index: 10;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* &#36866;&#37197;&#24494;&#20449;/&#31227;&#21160;&#31471;&#65292;&#30830;&#20445;canvas&#20840;&#23631; */<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; canvas {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; display: block;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width: 100vw;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; height: 100vh;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; &lt;/style&gt;<br>
+&lt;/head&gt;<br>
+&lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;div id="info"&gt;&#127876; &#31881;&#33394;&#22307;&#35806;&#26641; &#183; &#31890;&#23376;&#29983;&#25104;&#20013; &#127876;&lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&nbsp; &lt;!-- &#24341;&#20837; Three.js &#26680;&#24515;&#24211;&#21644;&#25193;&#23637;&#24211; --&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;script type="importmap"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "imports": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "three": "https://unpkg.com/three@0.128.0/build/three.module.js",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; &lt;/script&gt;<br>
+<br>
+&nbsp;&nbsp;&nbsp; &lt;script type="module"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import * as THREE from 'three';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import { OrbitControls } from 'three/addons/controls/OrbitControls.js';<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#21021;&#22987;&#21270;&#22330;&#26223;&#12289;&#30456;&#26426;&#12289;&#28210;&#26579;&#22120; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const scene = new THREE.Scene();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scene.background = new THREE.Color(0x000000); // &#40657;&#33394;&#32972;&#26223;&#65292;&#31361;&#20986;&#31881;&#33394;&#31890;&#23376;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20351;&#29992;&#36879;&#35270;&#30456;&#26426;&#65292;&#36866;&#21512;&#31227;&#21160;&#31471;&#35270;&#37326;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; camera.position.set(0, 2, 8);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; camera.lookAt(0, 1.5, 0);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; renderer.setSize(window.innerWidth, window.innerHeight);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // &#38480;&#21046;&#20687;&#32032;&#27604;&#65292;&#20248;&#21270;&#24615;&#33021;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.body.appendChild(renderer.domElement);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#28155;&#21152;&#19968;&#20123;&#29615;&#22659;&#20809;&#24494;&#24369;&#25928;&#26524;&#65292;&#20351;&#31890;&#23376;&#39068;&#33394;&#26356;&#40092;&#33395; (&#23545;Points&#26448;&#36136;&#24433;&#21709;&#19981;&#22823;&#65292;&#20294;&#26377;&#21161;&#20110;&#25972;&#20307;&#24863;&#30693;) ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23454;&#38469;&#19978;Points&#26448;&#36136;&#19981;&#38656;&#35201;&#20809;&#29031;&#65292;&#20294;&#20026;&#20102;&#27675;&#22260;&#21487;&#20197;&#21152;&#19968;&#28857;&#29615;&#22659;&#20809;&#35753;&#30456;&#26426;&#31245;&#24494;&#24863;&#30693;&#65292;&#36825;&#37324;&#30465;&#30053;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#28155;&#21152;&#31616;&#21333;&#36712;&#36947;&#25511;&#21046;&#65292;&#26041;&#20415;&#26597;&#30475;&#65292;&#20294;&#31227;&#21160;&#31471;&#21487;&#33021;&#19981;&#38656;&#35201;&#65292;&#20026;&#20102;&#20307;&#39564;&#20445;&#30041;&#65292;&#24182;&#20801;&#35768;&#29992;&#25143;&#26059;&#36716;&#26597;&#30475;&#31435;&#20307;&#25928;&#26524; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const controls = new OrbitControls(camera, renderer.domElement);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.enableDamping = true;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.dampingFactor = 0.05;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.autoRotate = true;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.autoRotateSpeed = 1.0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.enableZoom = true;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.enablePan = false;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.target.set(0, 1.5, 0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.maxPolarAngle = Math.PI / 2; // &#38480;&#21046;&#19981;&#35201;&#36716;&#21040;&#22320;&#19979;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#29983;&#25104;&#22307;&#35806;&#26641;&#31890;&#23376;&#25968;&#25454; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#21442;&#25968;&#37197;&#32622;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const treeHeight = 4.5;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#26641;&#24635;&#39640;&#24230;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const baseRadius = 1.8;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#24213;&#37096;&#21322;&#24452;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const topRadius = 0.1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#39030;&#37096;&#21322;&#24452;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const particleCount = 5500;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#24635;&#31890;&#23376;&#25968;&#65292;&#20445;&#35777;&#31227;&#21160;&#31471;&#24615;&#33021;&#27969;&#30021;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const pinkHues = [0.92, 0.95, 0.88, 0.9, 0.98]; // &#31881;&#33394;&#33394;&#30456;&#33539;&#22260;&#65288;0.9&#24038;&#21491;&#20026;&#31881;&#32418;&#65292;0.95&#20026;&#27973;&#31881;&#65289;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23384;&#20648;&#31890;&#23376;&#30340;&#20301;&#32622;&#21644;&#39068;&#33394;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const positions = new Float32Array(particleCount * 3);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const colors = new Float32Array(particleCount * 3);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#29992;&#20110;&#21160;&#30011;&#30340;&#8220;&#29983;&#25104;&#36827;&#24230;&#8221;&#65306;&#27599;&#20010;&#31890;&#23376;&#26377;&#19968;&#20010;y&#36724;&#27604;&#20363;&#38408;&#20540;&#65292;&#20174;0&#21040;1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20294;&#25105;&#20204;&#36890;&#36807;&#21518;&#26399;&#21160;&#30011;&#25511;&#21046;&#26174;&#31034;&#36827;&#24230;&#65292;&#36825;&#37324;&#20808;&#26500;&#24314;&#25152;&#26377;&#31890;&#23376;&#20301;&#32622;&#21644;&#39068;&#33394;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20026;&#20102;&#35753;&#8220;&#20174;&#19979;&#21040;&#19978;&#20381;&#27425;&#29983;&#25104;&#8221;&#25928;&#26524;&#33258;&#28982;&#65292;&#31890;&#23376;&#22312;&#29983;&#25104;&#26102;&#25353;&#29031;&#39640;&#24230;&#25490;&#24207;&#65292;&#36825;&#26679;&#36827;&#24230;&#25511;&#21046;&#26102;&#23601;&#20250;&#20174;&#24213;&#37096;&#20808;&#20986;&#29616;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20808;&#21019;&#24314;&#25968;&#32452;&#29992;&#20110;&#25490;&#24207;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const tempParticles = [];<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (let i = 0; i &lt; particleCount; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 1. &#20915;&#23450;&#31890;&#23376;&#22312;&#26641;&#19978;&#30340;&#39640;&#24230; (y&#22352;&#26631;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20026;&#20102;&#35753;&#24213;&#37096;&#23494;&#38598;&#12289;&#39030;&#37096;&#31232;&#30095;&#31526;&#21512;&#22278;&#38181;&#20307;&#31215;&#65292;&#20351;&#29992;sqrt&#20998;&#24067;&#35753;&#26356;&#22810;&#31890;&#23376;&#38752;&#36817;&#24213;&#37096;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20294;&#20026;&#20102;&#35270;&#35273;&#22343;&#21248;&#65292;&#20063;&#21487;&#20197;&#30452;&#25509;&#22343;&#21248;&#20998;&#24067;&#39640;&#24230;&#24182;&#35753;&#21322;&#24452;&#38543;&#39640;&#24230;&#32447;&#24615;&#20943;&#23567;&#12290;&#36825;&#37324;&#20351;&#29992;&#22343;&#21248;&#39640;&#24230;&#20998;&#24067;&#65292;&#20294;&#36890;&#36807;&#21322;&#24452;&#21464;&#21270;&#26469;&#34920;&#29616;&#20307;&#31215;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20026;&#20102;&#24213;&#37096;&#26356;&#20016;&#23500;&#65292;&#37319;&#29992;&#38543;&#26426;&#20294;&#20542;&#21521;&#20110;&#24213;&#37096;&#30340;&#20998;&#24067;&#65306;rand^0.7 &#20250;&#20351;&#24471;&#20540;&#20559;&#21521;0&#65288;&#24213;&#37096;&#65289;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const randY = Math.pow(Math.random(), 0.7); // 0~1&#65292;&#20559;&#21521;&#24213;&#37096;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const y = randY * treeHeight; // 0 &#21040; treeHeight<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 2. &#26681;&#25454;&#39640;&#24230;&#35745;&#31639;&#24403;&#21069;&#23618;&#30340;&#21322;&#24452; (&#32447;&#24615;&#25554;&#20540;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const t = y / treeHeight; // 0&#24213;&#37096; -&gt; 1&#39030;&#37096;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const radius = baseRadius * (1 - t) + topRadius * t;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 3. &#38543;&#26426;&#35282;&#24230;&#65292;&#29983;&#25104;&#22278;&#29615;&#19978;&#30340;&#28857;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const angle = Math.random() * Math.PI * 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 4. &#21322;&#24452;&#19978;&#21152;&#20837;&#38543;&#26426;&#25200;&#21160;&#65292;&#20351;&#26641;&#30475;&#36215;&#26469;&#26356;&#33258;&#28982;&#65292;&#19981;&#26159;&#20005;&#26684;&#30340;&#22278;&#38181;&#38754;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#25200;&#21160;&#24133;&#24230;&#38543;&#39640;&#24230;&#20943;&#23567;&#65292;&#39030;&#37096;&#26356;&#25910;&#32039;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const randomRad = radius * (0.7 + Math.random() * 0.6); // 0.7~1.3&#20493;&#21322;&#24452;&#33539;&#22260;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20294;&#20026;&#20102;&#26641;&#24418;&#29366;&#20445;&#25345;&#65292;&#31245;&#24494;&#38480;&#21046;&#39030;&#37096;&#25200;&#21160;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const finalRadius = Math.min(randomRad, radius * 1.2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const x = Math.cos(angle) * finalRadius;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const z = Math.sin(angle) * finalRadius;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#36731;&#24494;&#30340;&#39640;&#24230;&#25200;&#21160;&#65292;&#35753;&#23618;&#27425;&#26356;&#33258;&#28982;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const yOffset = (Math.random() - 0.5) * 0.2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const finalY = Math.max(0, Math.min(treeHeight, y + yOffset));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 5. &#39068;&#33394;&#65306;&#31881;&#33394;&#31995;&#65292;&#26681;&#25454;&#39640;&#24230;&#21644;&#38543;&#26426;&#21464;&#21270;&#20142;&#24230;&#19982;&#39281;&#21644;&#24230;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#22522;&#30784;&#33394;&#30456;&#21462;&#31881;&#33394;&#33539;&#22260;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const hue = pinkHues[Math.floor(Math.random() * pinkHues.length)];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#39281;&#21644;&#24230;&#65306;&#24213;&#37096;&#31245;&#24494;&#28145;&#19968;&#28857;&#65292;&#39030;&#37096;&#27973;&#19968;&#28857;&#65292;&#20294;&#20445;&#25345;&#31881;&#33394;&#24863;&#35273;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const saturation = 0.7 + Math.random() * 0.3; // 0.7~1.0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20142;&#24230;&#65306;&#35753;&#31890;&#23376;&#26377;&#26126;&#26263;&#21464;&#21270;&#65292;&#22686;&#21152;&#31435;&#20307;&#24863;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const lightness = 0.6 + Math.random() * 0.4; // 0.6~1.0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23558;HSL&#36716;&#20026;RGB (&#20351;&#29992;Three.js&#30340;Color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const color = new THREE.Color().setHSL(hue, saturation, lightness);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23384;&#20648;&#21040;&#20020;&#26102;&#25968;&#32452;&#65292;&#29992;&#20110;&#25353;&#39640;&#24230;&#25490;&#24207;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tempParticles.push({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x, y: finalY, z,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r: color.r, g: color.g, b: color.b,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23384;&#20648;&#21407;&#22987;&#39640;&#24230;&#29992;&#20110;&#25490;&#24207;&#21644;&#36827;&#24230;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; heightRatio: finalY / treeHeight // 0~1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#25353;&#39640;&#24230;&#65288;y&#20540;&#65289;&#20174;&#23567;&#21040;&#22823;&#25490;&#24207;&#65292;&#30830;&#20445;&#29983;&#25104;&#21160;&#30011;&#20174;&#19979;&#24448;&#19978;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tempParticles.sort((a, b) =&gt; a.y - b.y);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#22635;&#20805;&#21040;&#26368;&#32456;&#25968;&#32452;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (let i = 0; i &lt; particleCount; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const p = tempParticles[i];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; positions[i * 3] = p.x;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; positions[i * 3 + 1] = p.y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; positions[i * 3 + 2] = p.z;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; colors[i * 3] = p.r;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; colors[i * 3 + 1] = p.g;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; colors[i * 3 + 2] = p.b;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#21019;&#24314;&#31890;&#23376;&#20960;&#20309;&#20307; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const geometry = new THREE.BufferGeometry();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#21019;&#24314;&#22278;&#24418;&#31890;&#23376;&#32441;&#29702; (&#29992;&#20110;&#28857;&#26448;&#36136;&#65292;&#35753;&#31890;&#23376;&#21576;&#29616;&#26580;&#21644;&#22278;&#28857;) ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function createParticleTexture() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const canvas = document.createElement('canvas');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; canvas.width = 32;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; canvas.height = 32;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const ctx = canvas.getContext('2d');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#32472;&#21046;&#24452;&#21521;&#28176;&#21464;&#22278;&#28857;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gradient.addColorStop(0, 'rgba(255,255,255,1)');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gradient.addColorStop(0.5, 'rgba(255,200,220,1)'); // &#31881;&#33394;&#20809;&#26197;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gradient.addColorStop(1, 'rgba(255,105,180,0)');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ctx.fillStyle = gradient;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ctx.fillRect(0, 0, 32, 32);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new THREE.CanvasTexture(canvas);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const particleTexture = createParticleTexture();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#28857;&#26448;&#36136; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const material = new THREE.PointsMaterial({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; size: 0.12,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; map: particleTexture,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vertexColors: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20351;&#29992;&#27599;&#20010;&#31890;&#23376;&#30340;&#39068;&#33394;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; transparent: true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blending: THREE.AdditiveBlending, // &#21472;&#21152;&#28151;&#21512;&#65292;&#20135;&#29983;&#21457;&#20809;&#25928;&#26524;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; depthWrite: false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizeAttenuation: true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#21019;&#24314;Points&#23545;&#35937;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const treeParticles = new THREE.Points(geometry, material);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scene.add(treeParticles);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#28155;&#21152;&#19968;&#20123;&#28418;&#28014;&#30340;&#32972;&#26223;&#26143;&#26143;&#65292;&#22686;&#24378;&#27675;&#22260; (&#21487;&#36873;&#65292;&#19981;&#24433;&#21709;&#20027;&#20307;) ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const starGeometry = new THREE.BufferGeometry();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const starCount = 600;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const starPositions = new Float32Array(starCount * 3);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (let i = 0; i &lt; starCount; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#38543;&#26426;&#20998;&#24067;&#22312;&#36739;&#22823;&#33539;&#22260;&#20869;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; starPositions[i*3] = (Math.random() - 0.5) * 30;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; starPositions[i*3+1] = (Math.random() - 0.5) * 20 + 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; starPositions[i*3+2] = (Math.random() - 0.5) * 30 - 5;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const starMaterial = new THREE.PointsMaterial({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; color: 0xffaacc,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; size: 0.08,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; transparent: true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blending: THREE.AdditiveBlending,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; depthWrite: false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizeAttenuation: true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const stars = new THREE.Points(starGeometry, starMaterial);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scene.add(stars);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#21160;&#30011;&#25511;&#21046;&#65306;&#20174;&#19979;&#21040;&#19978;&#20381;&#27425;&#29983;&#25104; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#24605;&#36335;&#65306;&#27599;&#20010;&#31890;&#23376;&#26377;&#19968;&#20010;&#22522;&#20110;&#39640;&#24230;&#30340;&#8220;&#20986;&#29616;&#38408;&#20540;&#8221;&#65292;&#25105;&#20204;&#36890;&#36807;&#20462;&#25913;PointsMaterial&#30340;opacity&#25110;&#32773;&#20462;&#25913;geometry&#30340;drawRange&#65311;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20294;drawRange&#26080;&#27861;&#23454;&#29616;&#25353;&#39640;&#24230;&#36807;&#28388;&#12290;&#26356;&#22909;&#30340;&#21150;&#27861;&#65306;&#36890;&#36807;&#39030;&#28857;&#30528;&#33394;&#22120;&#25511;&#21046;&#27599;&#20010;&#31890;&#23376;&#30340;&#36879;&#26126;&#24230;&#65311;&#20294;&#20026;&#20102;&#31616;&#21333;&#19988;&#20860;&#23481;&#31227;&#21160;&#31471;&#65292;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#25105;&#20204;&#21487;&#20197;&#20351;&#29992;&#19968;&#20010;&#31616;&#21333;&#30340;&#26041;&#27861;&#65306;&#22312;&#21160;&#30011;&#24490;&#29615;&#20013;&#65292;&#36880;&#27493;&#22686;&#21152;&#19968;&#20010;&#36827;&#24230;&#20540;&#65292;&#28982;&#21518;&#37325;&#26032;&#26500;&#24314;&#20960;&#20309;&#20307;&#65311;&#37027;&#22826;&#28040;&#32791;&#24615;&#33021;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#26367;&#20195;&#26041;&#26696;&#65306;&#20351;&#29992;&#22810;&#20010;Points&#65311;&#25110;&#32773;&#20351;&#29992;&#19968;&#31181;&#25216;&#24039;&#65306;&#20026;&#27599;&#20010;&#31890;&#23376;&#35774;&#32622;&#19968;&#20010;&#33258;&#23450;&#20041;&#23646;&#24615;&#34920;&#31034;&#20854;&#20986;&#29616;&#26102;&#26426;&#65292;&#28982;&#21518;&#22312;&#30528;&#33394;&#22120;&#20013;&#20002;&#24323;&#65311;&#20294;&#38656;&#35201;&#20462;&#25913;&#26448;&#36136;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20026;&#20102;&#20445;&#25345;&#31616;&#21333;&#19988;&#24615;&#33021;&#22909;&#65292;&#36825;&#37324;&#37319;&#29992;&#19968;&#20010;&#8220;&#35270;&#35273;&#27450;&#39575;&#8221;&#30340;&#26041;&#27861;&#65306;&#31890;&#23376;&#23454;&#38469;&#19978;&#20840;&#37096;&#23384;&#22312;&#65292;&#20294;&#25105;&#20204;&#23558;&#28857;&#22823;&#23567;&#35774;&#32622;&#20026;0&#65288;&#19981;&#21487;&#35265;&#65289;&#65292;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#28982;&#21518;&#38543;&#30528;&#36827;&#24230;&#22686;&#21152;&#65292;&#25353;&#39640;&#24230;&#39034;&#24207;&#36880;&#28176;&#23558;&#28857;&#22823;&#23567;&#24674;&#22797;&#65311;&#20294;&#27599;&#20010;&#31890;&#23376;&#22823;&#23567;&#26159;&#32479;&#19968;&#30340;&#65292;&#19981;&#33021;&#21333;&#29420;&#25511;&#21046;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#22240;&#27492;&#65292;&#25105;&#20204;&#25442;&#19968;&#31181;&#26041;&#24335;&#65306;&#20351;&#29992;&#8220;&#32553;&#25918;&#8221;&#25972;&#20010;&#26641;&#65311;&#20294;&#26080;&#27861;&#23454;&#29616;&#20174;&#19979;&#21040;&#19978;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#26368;&#32456;&#26041;&#26696;&#65306;&#20351;&#29992;&#30528;&#33394;&#22120;&#25110;&#32773;&#24178;&#33030;&#22312;&#21160;&#30011;&#24490;&#29615;&#20013;&#26681;&#25454;&#39640;&#24230;&#36880;&#27493;&#26174;&#31034;&#31890;&#23376;&#65292;&#20855;&#20307;&#23454;&#29616;&#65306;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#25105;&#20204;&#37325;&#26032;&#21019;&#24314;&#20004;&#20010;&#20960;&#20309;&#20307;&#65311;&#22826;&#22797;&#26434;&#12290;&#25105;&#20204;&#37319;&#29992;&#19968;&#20010;&#25216;&#24039;&#65306;&#22240;&#20026;&#31890;&#23376;&#24050;&#25353;&#39640;&#24230;&#25490;&#24207;&#65292;&#25105;&#20204;&#21487;&#20197;&#36890;&#36807;&#26356;&#26032;geometry&#30340;drawRange&#26469;&#36880;&#27493;&#26174;&#31034;&#26356;&#22810;&#30340;&#31890;&#23376;&#32034;&#24341;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#30001;&#20110;&#39030;&#28857;&#32531;&#20914;&#21306;&#20013;&#30340;&#39034;&#24207;&#23601;&#26159;&#25353;&#39640;&#24230;&#25490;&#24207;&#30340;&#65292;&#25152;&#20197;drawRange(0, count) &#20250;&#26174;&#31034;&#21069;count&#20010;&#31890;&#23376;&#65292;&#36825;&#20123;&#31890;&#23376;&#24688;&#22909;&#26159;&#39640;&#24230;&#36739;&#20302;&#30340;&#65281;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23436;&#32654;&#65281;&#36825;&#26679;&#25105;&#20204;&#21482;&#38656;&#35201;&#22312;&#21160;&#30011;&#20013;&#36882;&#22686;count&#21363;&#21487;&#23454;&#29616;&#20174;&#19979;&#24448;&#19978;&#20986;&#29616;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#21021;&#22987;&#26102;&#21482;&#28210;&#26579;0&#20010;&#31890;&#23376;&#65288;drawRange&#20174;0&#24320;&#22987;&#65289;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; geometry.setDrawRange(0, 0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#21160;&#30011;&#21442;&#25968;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let progress = 0; // 0 &#21040; 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const animationSpeed = 0.005; // &#27599;&#24103;&#22686;&#21152;&#30340;&#36895;&#24230;&#65292;&#32422;3&#31186;&#23436;&#25104;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#23384;&#20648;&#24635;&#31890;&#23376;&#25968;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const totalCount = particleCount;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20026;&#20102;&#35753;&#25928;&#26524;&#26356;&#26580;&#21644;&#65292;&#36824;&#25511;&#21046;&#31890;&#23376;&#22823;&#23567;&#20174;0&#36880;&#28176;&#21464;&#22823;&#65311;&#20294;drawRange&#24050;&#32463;&#22815;&#29992;&#65292;&#19981;&#36807;&#21487;&#20197;&#28155;&#21152;&#19968;&#20010;&#25972;&#20307;&#22823;&#23567;&#21464;&#21270;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20063;&#21487;&#20197;&#35753;&#31890;&#23376;&#22823;&#23567;&#31245;&#24494;&#38543;&#36827;&#24230;&#21464;&#21270;&#65292;&#22686;&#21152;&#29983;&#21160;&#24863;&#12290;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#22312;&#21160;&#30011;&#24490;&#29615;&#20013;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function animate() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; requestAnimationFrame(animate);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#26356;&#26032;&#36827;&#24230;&#65292;&#30452;&#21040;1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (progress &lt; 1) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; progress += animationSpeed;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (progress &gt; 1) progress = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#26681;&#25454;&#36827;&#24230;&#35745;&#31639;&#24403;&#21069;&#24212;&#26174;&#31034;&#30340;&#31890;&#23376;&#25968;&#37327;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20351;&#29992;&#32531;&#21160;&#20989;&#25968;&#35753;&#24320;&#22987;&#26102;&#24930;&#65292;&#20013;&#38388;&#24555;&#65292;&#32467;&#26463;&#26102;&#24930;&#65311;&#20063;&#21487;&#20197;&#31616;&#21333;&#32447;&#24615;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#36825;&#37324;&#20351;&#29992;easeOutQuad&#35753;&#29983;&#25104;&#36807;&#31243;&#26356;&#33258;&#28982;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const easedProgress = 1 - Math.pow(1 - progress, 1.5); // &#31245;&#24494;&#24102;&#28857;&#32531;&#21160;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const currentCount = Math.floor(easedProgress * totalCount);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#26356;&#26032;drawRange&#65292;&#21482;&#26174;&#31034;&#21069;currentCount&#20010;&#31890;&#23376;&#65288;&#21363;&#39640;&#24230;&#20174;&#20302;&#21040;&#39640;&#30340;&#31890;&#23376;&#65289;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; geometry.setDrawRange(0, currentCount);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#21516;&#26102;&#24494;&#35843;&#31890;&#23376;&#22823;&#23567;&#65292;&#35753;&#25972;&#20307;&#30475;&#36215;&#26469;&#26356;&#26377;&#29983;&#38271;&#24863;&#65288;&#21487;&#36873;&#65289;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20294;&#20026;&#20102;&#24615;&#33021;&#65292;&#19981;&#27599;&#24103;&#20462;&#25913;material.size&#65292;&#25110;&#32773;&#21482;&#22312;&#19968;&#23450;&#33539;&#22260;&#20869;&#21464;&#21270;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // material.size = 0.08 + 0.08 * easedProgress; // &#20174;0.08&#21040;0.16<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#33258;&#21160;&#26059;&#36716;&#36890;&#36807;OrbitControls&#30340;autoRotate&#23454;&#29616;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; controls.update();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#35753;&#32972;&#26223;&#26143;&#26143;&#32531;&#24930;&#26059;&#36716;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stars.rotation.y += 0.0002;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stars.rotation.x += 0.0001;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#31890;&#23376;&#26641;&#30340;&#25972;&#20307;&#31245;&#24494;&#26059;&#36716;&#20063;&#21487;&#20197;&#65292;&#20294;OrbitControls&#33258;&#21160;&#26059;&#36716;&#24050;&#22815;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; renderer.render(scene, camera);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; animate();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // --- &#31383;&#21475;&#22823;&#23567;&#21464;&#21270;&#36866;&#37197; ---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; window.addEventListener('resize', onWindowResize, false);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function onWindowResize() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; camera.aspect = window.innerWidth / window.innerHeight;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; camera.updateProjectionMatrix();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; renderer.setSize(window.innerWidth, window.innerHeight);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#21551;&#21160;&#21518;&#31245;&#24494;&#24310;&#36831;&#19968;&#19979;&#65292;&#35753;&#21021;&#22987;&#25928;&#26524;&#26356;&#26126;&#26174;&#65288;&#21487;&#36873;&#65292;&#20294;&#19981;&#24517;&#65289;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &#20026;&#31227;&#21160;&#31471;&#24494;&#20449;&#65292;&#30830;&#20445;&#20840;&#23631;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log('3D&#31881;&#33394;&#22307;&#35806;&#26641;&#24050;&#21551;&#21160;&#65281;');<br>
+&nbsp;&nbsp;&nbsp; &lt;/script&gt;<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;</div>
+</body>
+</html>
